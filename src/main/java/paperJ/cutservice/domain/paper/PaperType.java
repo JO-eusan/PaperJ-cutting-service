@@ -1,0 +1,22 @@
+package paperJ.cutservice.domain.paper;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity @Getter
+public class PaperType {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PAPER_TYPE_ID")
+    private Long id;
+
+    @Column(name = "NAME")
+    private String name;
+
+    @OneToMany(mappedBy = "paperType")
+    private List<PaperColor> colors = new ArrayList<>();
+}
