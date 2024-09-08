@@ -21,11 +21,11 @@ public class Estimate {
     @Column(name = "IS_ORDER")
     private boolean isOrder;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAPER_TYPE_ID")
     private PaperType paperType;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAPER_COLOR_ID")
     private PaperColor paperColor;
 
@@ -47,10 +47,10 @@ public class Estimate {
     @Column(name = "TOTAL_PRICE")
     private double totalPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToOne(mappedBy = "estimate")
+    @OneToOne(mappedBy = "estimate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Order order;
 }

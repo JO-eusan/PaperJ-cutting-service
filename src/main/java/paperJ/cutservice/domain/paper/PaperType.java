@@ -17,6 +17,6 @@ public class PaperType {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "paperType")
+    @OneToMany(mappedBy = "paperType", cascade = CascadeType.ALL)
     private List<PaperColor> colors = new ArrayList<>();
 }

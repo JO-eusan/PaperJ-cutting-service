@@ -14,7 +14,7 @@ public class PaperColor {
     @Column(name = "COLOR")
     private String color;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAPER_TYPE_ID")
     private PaperType paperType;
 }

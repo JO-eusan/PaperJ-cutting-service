@@ -24,7 +24,7 @@ public class Order {
     @Column(name = "STATUS")
     private OrderStatus status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ESTIMATE_ID")
     private Estimate estimate;
 }

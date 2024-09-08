@@ -18,6 +18,6 @@ public class User {
     @Column(name = "PASSKEY")
     private String passkey;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Estimate> estimates = new ArrayList<>();
 }
