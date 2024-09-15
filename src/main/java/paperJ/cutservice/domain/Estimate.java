@@ -53,4 +53,28 @@ public class Estimate {
 
     @OneToOne(mappedBy = "estimate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Order order;
+
+    // 기본 생성자
+    protected Estimate() {}
+
+    // 사용자에게 입력받는 초기 정보로 생성
+    public Estimate(PaperType paperType, PaperColor paperColor, int sizeX, int sizeY, int cardQuantity, User user) {
+        this.issueDate = LocalDate.now();
+        this.isOrder = false;
+
+        this.paperType = paperType;
+        this.paperColor = paperColor;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.cardQuantity = cardQuantity;
+        this.user = user;
+    }
+
+    /*
+     ** 견적서 결과에 대한 계산 메서드 추가
+     ** sheetQuantity
+     ** pricePerSheet
+     ** totalPrice
+     */
+
 }

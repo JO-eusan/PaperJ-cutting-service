@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Paper J - Admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Pretendard 폰트 추가 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif; /* 모든 텍스트에 Pretendard 적용 */
+        }
+
+        .logo {
+            max-width: 350px;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh; /* 화면 전체 높이를 사용하여 세로 가운데 정렬 */
+        }
+
+        .admin-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-inline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-inline label {
+            margin-right: 10px;
+        }
+
+        .form-inline .form-control {
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-top: 20px;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="admin-container">
+        <img src="/logo/cursive.png" class="logo" alt="Paper J Logo">
+        <p>관리자 권한을 확인하기 위해 암호키를 입력하세요.</p>
+
+        <!-- 오류 메시지 표시 -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <form th:action="@{/admin/check}" method="post" class="form-inline">
+            <div class="form-group">
+                <label for="checkkey">CheckKey</label>
+                <input type="password" class="form-control" id="checkkey" name="checkkey" placeholder="암호키를 입력하세요!">
+            </div>
+            <button type="submit" class="btn btn-dark">확인</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

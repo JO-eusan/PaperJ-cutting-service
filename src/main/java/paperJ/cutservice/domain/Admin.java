@@ -12,8 +12,8 @@ public class Admin {
     private Long id;
 
     @Column(name = "PASSKEY")
-    private String passkey;
+    private String passkey = "admin";
 
     @Column(name = "CHECKKEY")
-    private String checkkey;
+    private String checkkey = "0330";
 }

@@ -17,6 +17,12 @@ public class PaperType {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "SIZE_X")
+    private int sizeX;
+
+    @Column(name = "SIZE_Y")
+    private int sizeY;
+
     @OneToMany(mappedBy = "paperType", cascade = CascadeType.ALL)
     private List<PaperColor> colors = new ArrayList<>();
 }

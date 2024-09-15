@@ -20,4 +20,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Estimate> estimates = new ArrayList<>();
+
+    // 기본 생성자
+    protected User() {}
+
+    // passkey를 설정하는 생성자
+    public User(String passkey) {
+        this.passkey = passkey;
+    }
 }
