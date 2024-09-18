@@ -40,8 +40,8 @@ public class UserService {
 
     /* 사용자가 새로운 견적서 발급 */
     @Transactional
-    public void createEstimate(PaperType paperType, PaperColor paperColor, int sizeX, int sizeY, int cardQuantity, User user) {
-        Estimate estimate = new Estimate(paperType, paperColor, sizeX, sizeY, cardQuantity, user);
+    public void createEstimate(PaperType paperType, PaperColor paperColor, int sizeX, int sizeY, int GSM, int cardQuantity, User user) {
+        Estimate estimate = new Estimate(paperType, paperColor, sizeX, sizeY, GSM, cardQuantity, user);
         estimateRepository.save(estimate); // 기본정보만 저장 -> 추후 Estimate service에서 로직 호출
     }
 

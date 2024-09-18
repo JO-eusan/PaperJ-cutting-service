@@ -18,10 +18,21 @@ public class EstimateRepository {
         em.persist(estimate);
     }
 
+    /* 견적서 하나를 ID로 조회 */
+    public Estimate findById(Long id) {
+        return em.find(Estimate.class, id);
+    }
+
     /* 특정 사용자의 견적서 목록 조회 */
     public List<Estimate> findByUser(Long userId) {
         return em.createQuery("select e from estimate e where e.user.id = :userId", Estimate.class)
                 .setParameter("userId", userId)
+                .getResultList();
+    }
+
+    /* 모든 견적서 조회 */
+    public List<Estimate> findAllEstimates() {
+        return em.createQuery("select e from Estimate e", Estimate.class)
                 .getResultList();
     }
 }

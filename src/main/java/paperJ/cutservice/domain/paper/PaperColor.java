@@ -20,4 +20,14 @@ public class PaperColor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAPER_TYPE_ID")
     private PaperType paperType;
+
+    // 기본 생성자
+    protected PaperColor() {}
+
+    // 사용자에게 입력받는 초기 정보로 생성
+    public PaperColor(String color, double pricePerSheet, PaperType paperType) {
+        this.color = color;
+        this.pricePerSheet = pricePerSheet;
+        this.paperType = paperType;
+    }
 }

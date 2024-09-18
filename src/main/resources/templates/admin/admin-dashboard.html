@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        /* 기본 폰트 및 레이아웃 설정 */
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #ffffff; /* 전체 배경을 연한 회색으로 */
+            text-align: center;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 40px;
+        }
+        /* 박스 스타일: 연한 회색 배경 */
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f0f0f0; /* 더 연한 회색 배경 */
+            border: none; /* 테두리 제거 */
+            margin-bottom: 30px;
+        }
+        /* 버튼 및 테두리 색상 */
+        .btn-custom {
+            border: 2px solid #888888; /* 연한 회색 테두리 */
+            background-color: transparent;
+            color: #333; /* 텍스트 색상도 회색 */
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-custom:hover {
+            background-color: #e0e0e0; /* 호버 시 연한 회색 배경 */
+        }
+        select.form-control {
+            border: 2px solid #888888; /* 연한 회색 테두리 */
+            border-radius: 5px;
+        }
+        select.form-control:focus {
+            box-shadow: none;
+            border-color: #666666; /* 클릭 시 더 진한 회색 */
+        }
+        /* 구분선 제거 및 정렬 */
+        .no-divider {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        /* 파일 선택 및 업로드 섹션 가운데 정렬 */
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 수평 가운데 정렬 */
+        }
+        .form-group {
+            text-align: center;
+        }
+        /* 파일 상태 메시지 스타일 */
+        .file-status {
+            color: #888;
+            margin-top: 10px;
+            margin-bottom: 20px; /* 파일 선택 버튼과 아래 텍스트 사이의 여백 */
+        }
+    </style>
+    <script>
+        // 파일 선택 감지 및 상태 메시지 업데이트
+        function handleFileChange(input) {
+            const fileStatus = document.getElementById('fileStatus');
+            if (input.files.length > 0) {
+                fileStatus.textContent = input.files[0].name;  // 선택된 파일 이름 표시
+            } else {
+                fileStatus.textContent = "선택된 파일 없음";  // 파일을 선택하지 않았을 때 메시지 표시
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <!-- 상단에 이미지 로고 추가 -->
+    <img src="/logo/cursive.png" class="logo" alt="Paper J Logo">
+
+    <!-- 주문 신청 현황이 위로 -->
+    <div class="card">
+        <h4 style="color: #333;">주문 신청 현황</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>연락처</th>
+                <th>신청자</th>
+                <th>주문 현황</th>
+                <th>견적서 확인</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="estimate : ${estimates}">
+                <td th:text="${estimate.id}"></td>
+                <td th:text="${estimate.user.contact ?: ''}"></td>
+                <td th:text="${estimate.user.name ?: ''}"></td>
+                <td>
+                    <form th:action="@{/admin/order/update/{id}(id=${estimate.id})}" method="post" class="inline-form">
+                        <select class="form-control" name="status" onchange="this.form.submit()">
+                            <option th:selected="${estimate.isOrder ? '주문 완료' : '견적서 발급'}">견적서 발급</option>
+                            <option>접수완료</option>
+                            <option>접수 확인중</option>
+                            <option>주문완료</option>
+                            <option>재단 준비중</option>
+                            <option>배송 준비중</option>
+                            <option>배송중</option>
+                            <option>배송 완료</option>
+                        </select>
+                    </form>
+                </td>
+                <td><a th:href="@{/estimate/view/{id}(id=${estimate.id})}" class="btn-custom">확인</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 구분선 제거 -->
+    <div class="no-divider"></div>
+
+    <!-- 종이 목록 관리가 아래로 -->
+    <div class="card">
+        <h4 style="color: #333;">종이 목록 관리</h4>
+        <p>새로운 종이 목록 파일을 업로드 하세요. (.excel)</p>
+        <div class="upload-section">
+            <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" class="form-control-file" name="file" onchange="handleFileChange(this)" required>
+                </div>
+                <button type="submit" class="btn-custom">파일 업로드</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

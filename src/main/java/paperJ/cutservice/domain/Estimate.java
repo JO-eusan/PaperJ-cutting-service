@@ -35,6 +35,9 @@ public class Estimate {
     @Column(name = "SIZE_Y")
     private int sizeY;
 
+    @Column(name = "GSM")
+    private int GSM;
+
     @Column(name = "CARD_QUANTITY")
     private int cardQuantity;
 
@@ -58,7 +61,7 @@ public class Estimate {
     protected Estimate() {}
 
     // 사용자에게 입력받는 초기 정보로 생성
-    public Estimate(PaperType paperType, PaperColor paperColor, int sizeX, int sizeY, int cardQuantity, User user) {
+    public Estimate(PaperType paperType, PaperColor paperColor, int sizeX, int sizeY, int GSM, int cardQuantity, User user) {
         this.issueDate = LocalDate.now();
         this.isOrder = false;
 
@@ -66,6 +69,7 @@ public class Estimate {
         this.paperColor = paperColor;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        this.GSM = GSM;
         this.cardQuantity = cardQuantity;
         this.user = user;
     }
