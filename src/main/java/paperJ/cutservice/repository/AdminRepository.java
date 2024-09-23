@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import paperJ.cutservice.domain.Estimate;
-import paperJ.cutservice.domain.User;
 
 import java.util.List;
 

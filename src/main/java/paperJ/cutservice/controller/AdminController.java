@@ -55,12 +55,12 @@ public class AdminController {
         return "admin/admin-dashboard";
     }
 
-    // 견적서 확인 페이지
+    // 견적서 확인 페이지(사용자 발급)
     @GetMapping("/estimate/view/{id}")
     public String viewEstimate(@PathVariable Long id, Model model) {
         Estimate estimate = estimateService.getEstimateById(id);
         model.addAttribute("estimate", estimate);
-        return "admin/estimate-view";
+        return "user/estimate-view"; // 사용자와 같은 견적서 확인 페이지 사용
     }
 
     // 파일 업로드 처리
@@ -78,8 +78,8 @@ public class AdminController {
     // 주문 상태 업데이트
     @PostMapping("/update-status/{id}")
     public String updateOrderStatus(@PathVariable Long id, @RequestParam("status") String status) {
-        // 주문 상태 업데이트 로직 필요
-        return "redirect:/admin/dashboard";
+        estimateService.updateOrderStatus(id, status);
+        return "redirect:/admin/dashboard"; // 상태 업데이트 후, 대시보드로 이동
     }
 }
 

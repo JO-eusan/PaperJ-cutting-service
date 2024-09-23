@@ -19,6 +19,10 @@ public class PaperTypeRepository {
         em.persist(paperType);
     }
 
+    public PaperType findById(Long paperTypeId) {
+        return em.find(PaperType.class, paperTypeId);
+    }
+
     /* 종이 이름으로 조회 */
     public PaperType findByNameAndGSM(String name, int gsm) {
         try {
@@ -32,8 +36,8 @@ public class PaperTypeRepository {
     }
 
     /* 모든 종이 종류 조회 */
-    public List<PaperType> findAll() {
-        return em.createQuery("select pt from PaperType pt", PaperType.class)
+    public List<String> findAllPaperType() {
+        return em.createQuery("select distinct pt.name from PaperType pt", String.class)
                 .getResultList();
     }
 

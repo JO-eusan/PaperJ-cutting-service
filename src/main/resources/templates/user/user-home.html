@@ -78,15 +78,30 @@
     </div>
     <!-- 버튼 영역 -->
     <div class="button-container">
-        <div class="button-left" onclick="location.href='/estimate/issue'">
+        <div class="button-left" th:data-userId="${userId}" id="createEstimateButton">
             <strong>재단 견적서</strong><br>
             발급
         </div>
-        <div class="button-right" onclick="location.href='/estimate/view'">
+        <div class="button-right" th:data-userId="${userId}" id="viewEstimateButton">
             <strong>재단 견적서</strong><br>
             조회
         </div>
     </div>
 </div>
+
+<script>
+    // 견적서 발급 버튼 클릭 이벤트
+    document.getElementById("createEstimateButton").addEventListener("click", function() {
+        var userId = this.getAttribute("data-userId");
+        console.log("Create Estimate Button Clicked. userId:", userId); // 확인용 로그
+        location.href = '/user/estimate/new/' + userId;
+    });
+
+    document.getElementById("viewEstimateButton").addEventListener("click", function() {
+        var userId = this.getAttribute("data-userId");
+        console.log("View Estimate Button Clicked. userId:", userId); // 확인용 로그
+        location.href = '/user/estimate/list/' + userId;
+    });
+</script>
 </body>
 </html>

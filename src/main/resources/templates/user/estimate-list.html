@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>견적서 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>견적서 목록</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>견적서 ID</th>
+            <th>종이 종류</th>
+            <th>종이 색상</th>
+            <th>GSM</th>
+            <th>크기 (cm)</th>
+            <th>주문 장수</th>
+            <th>발급 날짜</th>
+            <th>상세 보기</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estimate : ${estimates}">
+            <td th:text="${estimate.id}"></td>
+            <td th:text="${estimate.paperType.name}"></td>
+            <td th:text="${estimate.paperColor.color}"></td>
+            <td th:text="${estimate.GSM}"></td>
+            <td th:text="${estimate.sizeX} + ' x ' + ${estimate.sizeY}"></td>
+            <td th:text="${estimate.cardQuantity}"></td>
+            <td th:text="${estimate.issueDate}"></td>
+            <td>
+                <a href="#" class="btn btn-primary viewDetailButton"
+                   th:data-id="${estimate.id}"
+                   th:data-userId="${userId}">상세 보기</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // 상세 보기 버튼 클릭 이벤트 리스너 추가
+    document.querySelectorAll(".viewDetailButton").forEach(function(button) {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+            var id = this.getAttribute("data-id");
+            var userId = this.getAttribute("data-userId");
+            location.href = '/estimate/view/' + userId + '/' + id;
+        });
+    });
+</script>
+</body>
+</html>

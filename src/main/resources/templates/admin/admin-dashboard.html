@@ -104,8 +104,9 @@
             <tbody>
             <tr th:each="estimate : ${estimates}">
                 <td th:text="${estimate.id}"></td>
-                <td th:text="${estimate.user.contact ?: ''}"></td>
-                <td th:text="${estimate.user.name ?: ''}"></td>
+                <!-- 주문하지 않았을 경우 빈 값을 출력 -->
+                <td th:text="${estimate.order?.userInfo?.contact ?: ''}"></td>
+                <td th:text="${estimate.order?.userInfo?.name ?: ''}"></td>
                 <td>
                     <form th:action="@{/admin/order/update/{id}(id=${estimate.id})}" method="post" class="inline-form">
                         <select class="form-control" name="status" onchange="this.form.submit()">
@@ -137,6 +138,7 @@
             <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="file" class="form-control-file" name="file" onchange="handleFileChange(this)" required>
+                    <div id="fileStatus" class="file-status">선택된 파일 없음</div> <!-- 파일 상태 표시 -->
                 </div>
                 <button type="submit" class="btn-custom">파일 업로드</button>
             </form>

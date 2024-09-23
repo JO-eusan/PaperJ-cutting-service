@@ -1,12 +1,15 @@
 package paperJ.cutservice.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import paperJ.cutservice.domain.Admin;
+import paperJ.cutservice.domain.User;
 import paperJ.cutservice.service.UserService;
 
 @Slf4j
@@ -22,9 +25,8 @@ public class LoginController {
         return "home"; // home.html로 이동 (홈 화면)
     }
 
-    // passkey를 입력받아 처리
     @PostMapping("/login")
-    public String login(@RequestParam("passkey") String passkey) {
+    public String login(@RequestParam("passkey") String passkey, Model model) {
         log.info("User passkey: {}", passkey);
 
         Admin admin = new Admin();
@@ -36,9 +38,12 @@ public class LoginController {
         } else {
             log.info("Redirecting to user home page.");
 
-            userService.joinOrFindUser(passkey);
+            // 사용자 생성 또는 검색
+            User user = userService.joinOrFindUser(passkey);
 
-            return "redirect:/user/home"; // 일반 사용자 화면으로 이동 -> UserController
+            model.addAttribute("userId", user.getId());
+
+            return "redirect:/user/home/" + user.getId(); // 일반 사용자 화면으로 이동 -> UserController
         }
     }
 }

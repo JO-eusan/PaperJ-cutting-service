@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>견적서 발급</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>견적서 발급</h2>
+    <form th:action="@{/user/estimate/new/{userId}(userId=${userId})}" method="post">
+        <!-- 숨겨진 userId 필드 추가 -->
+        <input type="hidden" name="userId" th:value="${userId}">
+
+        <!-- PaperType (종이 종류) -->
+        <div class="form-group">
+            <label for="paperType">종이 종류</label>
+            <select class="form-control" id="paperType" name="paperName" required>
+                <option value="">종이 종류를 선택하세요</option>
+                <option th:each="paperTypeName : ${paperTypes}" th:value="${paperTypeName}" th:text="${paperTypeName}"></option>
+            </select>
+        </div>
+
+        <!-- GSM 선택 -->
+        <div class="form-group">
+            <label for="gsm">GSM</label>
+            <select class="form-control" id="gsm" name="gsm" required>
+                <option value="">먼저 종이 종류를 선택하세요</option>
+            </select>
+        </div>
+
+        <!-- PaperColor (종이 색상) -->
+        <div class="form-group">
+            <label for="paperColor">종이 색상</label>
+            <select class="form-control" id="paperColor" name="paperColor" required>
+                <option value="">먼저 GSM을 선택하세요</option>
+            </select>
+        </div>
+
+        <!-- 사이즈 입력 -->
+        <div class="form-group">
+            <label for="sizeX">가로 크기 (cm)</label>
+            <input type="number" class="form-control" id="sizeX" name="sizeX" required>
+        </div>
+        <div class="form-group">
+            <label for="sizeY">세로 크기 (cm)</label>
+            <input type="number" class="form-control" id="sizeY" name="sizeY" required>
+        </div>
+
+        <!-- 주문 장수 입력 -->
+        <div class="form-group">
+            <label for="cardQuantity">주문 장수</label>
+            <input type="number" class="form-control" id="cardQuantity" name="cardQuantity" required>
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button type="submit" class="btn btn-primary">견적서 발급</button>
+    </form>
+</div>
+
+<script>
+    // 종이 종류 선택 시 GSM 목록 불러오기
+    $('#paperType').on('change', function() {
+        var paperTypeName = $(this).val();
+        if (paperTypeName) {
+            $.ajax({
+                url: '/user/gsm',
+                type: 'GET',
+                data: { paperTypeName: paperTypeName },
+                success: function(data) {
+                    $('#gsm').empty();
+                    $('#gsm').append('<option value="">GSM을 선택하세요</option>');
+                    $.each(data, function(key, value) {
+                        $('#gsm').append('<option value="' + value + '">' + value + '</option>');
+                    });
+                    $('#paperColor').empty(); // 종이 종류 변경 시 종이 색상 목록 초기화
+                    $('#paperColor').append('<option value="">먼저 GSM을 선택하세요</option>');
+                }
+            });
+        } else {
+            $('#gsm').empty();
+            $('#gsm').append('<option value="">먼저 종이 종류를 선택하세요</option>');
+            $('#paperColor').empty();
+            $('#paperColor').append('<option value="">먼저 GSM을 선택하세요</option>');
+        }
+    });
+
+    // GSM 선택 시 종이 색상 목록 불러오기
+    $('#gsm').on('change', function() {
+        var paperTypeName = $('#paperType').val();
+        var gsm = $(this).val();
+        if (gsm) {
+            $.ajax({
+                url: '/user/paperColors',
+                type: 'GET',
+                data: { paperTypeName: paperTypeName, gsm: gsm },
+                success: function(data) {
+                    $('#paperColor').empty();
+                    $('#paperColor').append('<option value="">종이 색상을 선택하세요</option>');
+                    $.each(data, function(key, value) {
+                        $('#paperColor').append('<option value="' + value + '">' + value + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching paper colors: ", error);
+                }
+            });
+        } else {
+            $('#paperColor').empty();
+            $('#paperColor').append('<option value="">먼저 GSM을 선택하세요</option>');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>견적서 상세 정보</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>견적서 상세 정보</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">견적서 ID: <span th:text="${estimate.id}"></span></h5>
+            <p class="card-text">종이 종류: <span th:text="${estimate.paperType.name}"></span></p>
+            <p class="card-text">종이 색상: <span th:text="${estimate.paperColor.color}"></span></p>
+            <p class="card-text">GSM: <span th:text="${estimate.GSM}"></span></p>
+            <p class="card-text">크기: <span th:text="${estimate.sizeX} + ' x ' + ${estimate.sizeY}"></span> cm</p>
+            <p class="card-text">주문 장수: <span th:text="${estimate.cardQuantity}"></span></p>
+            <p class="card-text">발급 날짜: <span th:text="${estimate.issueDate}"></span></p>
+            <p class="card-text">총 가격: <span th:text="${estimate.totalPrice}"></span> 원</p>
+            <a href="#" class="btn btn-primary" id="backToListButton" th:data-userId="${userId}">견적서 목록으로 돌아가기</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 목록으로 돌아가기 버튼 클릭 이벤트 리스너 추가
+    document.getElementById("backToListButton").addEventListener("click", function(event) {
+        event.preventDefault();
+        var userId = this.getAttribute("data-userId");
+        location.href = '/user/estimate/list/' + userId;
+    });
+</script>
+</body>
+</html>

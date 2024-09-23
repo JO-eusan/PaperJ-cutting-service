@@ -25,7 +25,7 @@ public class EstimateRepository {
 
     /* 특정 사용자의 견적서 목록 조회 */
     public List<Estimate> findByUser(Long userId) {
-        return em.createQuery("select e from estimate e where e.user.id = :userId", Estimate.class)
+        return em.createQuery("select e from Estimate e where e.user.id = :userId", Estimate.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }

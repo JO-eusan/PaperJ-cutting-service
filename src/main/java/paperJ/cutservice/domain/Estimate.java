@@ -74,11 +74,33 @@ public class Estimate {
         this.user = user;
     }
 
+    // 견적서 주문 상태 변경
+    public void changeStatus(boolean status) {
+        this.isOrder = status;
+    }
+
+    // 주문 발급시 설정
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     /*
-     ** 견적서 결과에 대한 계산 메서드 추가
+     ** 견적서 결과에 대한 계산 후에 값 추가를 위한 setter
      ** sheetQuantity
      ** pricePerSheet
      ** totalPrice
      */
+
+    public void setSheetQuantity(int sheetQuantity) {
+        this.sheetQuantity = sheetQuantity;
+    }
+
+    public void setPricePerSheet(double pricePerSheet) {
+        this.pricePerSheet = pricePerSheet;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
 }

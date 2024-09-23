@@ -20,6 +20,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final EstimateRepository estimateRepository;
 
+    @Transactional
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    /* 사용자 이름으로 사용자 찾기 */
+    @Transactional
+    public User getUser(String passkey) {
+        return userRepository.findByPasskey(passkey);
+    }
+
     /* 사용자 가입 및 조회 */
     @Transactional
     public User joinOrFindUser(String passkey) {

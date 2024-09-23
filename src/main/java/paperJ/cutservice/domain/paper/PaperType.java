@@ -2,7 +2,6 @@ package paperJ.cutservice.domain.paper;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import paperJ.cutservice.repository.paper.PaperTypeRepository;
 
 import java.util.ArrayList;
 import java.util.List;

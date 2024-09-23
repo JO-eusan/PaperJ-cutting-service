@@ -15,7 +15,7 @@ public class User {
     @Column(name = "USER_ID")
     private Long id;
 
-    @Column(name = "PASSKEY")
+    @Column(name = "PASSKEY", nullable = false, unique = true)
     private String passkey;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
