@@ -19,6 +19,7 @@ public class LoginController {
 
     private final UserService userService;
 
+    /* 홈 화면 -> passkey 입력 */
     @RequestMapping("/")
     public String home() {
         log.info("home controller");

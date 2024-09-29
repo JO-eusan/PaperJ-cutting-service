@@ -25,7 +25,7 @@ public class PaperTypeService {
 
     /* 모든 PaperType 조회 */
     public List<String> getAllPaperTypes() {
-        return paperTypeRepository.findAllPaperType();
+        return paperTypeRepository.findAllPaperTypes();
     }
 
     /* ID로 종이 종류 조회 */
@@ -38,9 +38,9 @@ public class PaperTypeService {
         return paperTypeRepository.findByNameAndGSM(name, gsm);
     }
 
-    /* 종이 이름으로 GSM 조회 */
-    public List<Integer> getGSMbyPaperType(String name) {
-        return paperTypeRepository.findGSMbyPaperType(name);
+    /* 종이 이름으로 GSM으로 papertype ID 조회 */
+    public List<Integer> getGSMbyPaperType(String paperTypeName) {
+        return paperTypeRepository.findGSMbyPaperType(paperTypeName);
     }
 
     /* 종이 이름과 GSM으로 색상 조회 */

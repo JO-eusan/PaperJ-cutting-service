@@ -25,11 +25,6 @@ public class EstimateService {
     private final PaperColorRepository paperColorRepository;
     private final OrderRepository orderRepository;
 
-    /* 모드 견적서 조회 */
-    public List<Estimate> getAllEstimate() {
-        return estimateRepository.findAllEstimates();
-    }
-
     /* 특정 견적서를 사용자로 조회 */
     public List<Estimate> getEstimateByUserId(Long userId) {
         return estimateRepository.findByUser(userId);
@@ -44,7 +39,10 @@ public class EstimateService {
     @Transactional
     public void updateOrderStatus(Long estimateId, String status) {
         Estimate estimate = estimateRepository.findById(estimateId);
-        estimate.getOrder().setStatus(OrderStatus.valueOf(status));
+        Order order = estimate.getOrder();
+
+        order.setStatus(status);
+        orderRepository.save(order);
     }
 
     /* 견적서 발급 */
@@ -70,32 +68,22 @@ public class EstimateService {
         return estimate;
     }
 
-    /* 견적서에 대한 주문 신청 */
-    @Transactional
-    public void requestOrder(Long estimateId, String contact, String name) {
-        Estimate estimate = estimateRepository.findById(estimateId);
-
-        // 이미 주문이 존재하는 경우 처리
-        if (estimate.getOrder() != null) {
-            throw new IllegalArgumentException("해당 견적서에 대한 주문이 이미 존재합니다.");
-        }
-
-        UserInfo userInfo = new UserInfo(contact, name);
-
-        Order order = new Order(userInfo, estimate);
-        orderRepository.save(order);
-
-        estimate.changeStatus(true);
-        estimate.setOrder(order);
-    }
-
     /* 견적서 계산 로직 (sheetQuantity, pricePersheet, totalPrice) */
     private int calculateSheetQuantity(Estimate estimate) {
-        // 종이의 면적과 카드의 면적을 계산
-        int sheetArea = estimate.getPaperType().getSizeX() * estimate.getPaperType().getSizeY();
-        int cardArea = estimate.getSizeX() * estimate.getSizeY();
+        // 종이의 크기와 엽서의 크기
+        int sheetX = estimate.getPaperType().getSizeX();
+        int sheetY = estimate.getPaperType().getSizeY();
+        int cardX = estimate.getSizeX();
+        int cardY = estimate.getSizeY();
 
-        // 종이 1장당 몇 장의 카드를 만들 수 있는지 계산
-        return (int) Math.ceil((double) estimate.getCardQuantity() / (sheetArea / cardArea));
+        // 작은 면을 기준으로 몇 개의 카드가 들어갈 수 있는지 계산
+        int cardsPerX = Math.min(sheetX, sheetY) / Math.min(cardX, cardY);
+        int cardsPerY = Math.max(sheetX, sheetY) / Math.min(cardX, cardY);
+
+        // 종이 한 장에서 나올 수 있는 총 카드 수 계산
+        int cardsPerSheet = cardsPerX * cardsPerY;
+
+        // 총 카드 수를 종이 한 장당 나오는 카드 수로 나눠서 필요한 종이 수 계산
+        return (int) Math.ceil((double) estimate.getCardQuantity() / cardsPerSheet);
     }
 }

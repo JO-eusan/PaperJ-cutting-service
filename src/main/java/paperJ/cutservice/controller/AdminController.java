@@ -1,17 +1,18 @@
 package paperJ.cutservice.controller;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import paperJ.cutservice.domain.Admin;
 import paperJ.cutservice.domain.Estimate;
+import paperJ.cutservice.domain.Order;
+import paperJ.cutservice.domain.OrderStatus;
 import paperJ.cutservice.service.AdminService;
 import paperJ.cutservice.service.EstimateService;
+import paperJ.cutservice.service.OrderService;
 import paperJ.cutservice.service.paper.PaperTypeService;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class AdminController {
     private final AdminService adminService;
     private final EstimateService estimateService;
     private final PaperTypeService paperTypeService;
+    private final OrderService orderService;
 
     // 관리자 체크 페이지 (admin-check.html) 보여줌
     @GetMapping("/check")
@@ -50,17 +52,18 @@ public class AdminController {
     // 관리자 대시보드 화면 (주문 현황 및 파일 업로드)
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
-        List<Estimate> estimates = estimateService.getAllEstimate();
+        List<Estimate> estimates = adminService.getAllEstimates();
         model.addAttribute("estimates", estimates);
         return "admin/admin-dashboard";
     }
 
     // 견적서 확인 페이지(사용자 발급)
-    @GetMapping("/estimate/view/{id}")
+    @GetMapping("/estimate/viewonly/{id}")
     public String viewEstimate(@PathVariable Long id, Model model) {
         Estimate estimate = estimateService.getEstimateById(id);
         model.addAttribute("estimate", estimate);
-        return "user/estimate-view"; // 사용자와 같은 견적서 확인 페이지 사용
+        model.addAttribute("role", "ADMIN"); // 관리자 설정
+        return "user/estimate-only-view"; // 사용자와 같은 견적서 확인 페이지 사용
     }
 
     // 파일 업로드 처리
@@ -76,9 +79,13 @@ public class AdminController {
     }
 
     // 주문 상태 업데이트
-    @PostMapping("/update-status/{id}")
+    @PostMapping("/order/update/{id}")
     public String updateOrderStatus(@PathVariable Long id, @RequestParam("status") String status) {
+        Order order = orderService.getOrderByEstimateId(id);
+
+        order.setStatus(status);
         estimateService.updateOrderStatus(id, status);
+
         return "redirect:/admin/dashboard"; // 상태 업데이트 후, 대시보드로 이동
     }
 }

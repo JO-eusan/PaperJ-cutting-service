@@ -16,7 +16,7 @@ public class UserInfo {
     // 기본 생성자
     protected UserInfo() {}
 
-    // passkey를 설정하는 생성자
+    // 주문 시, 사용자 정보 생성
     public UserInfo(String name, String contact) {
         this.name = name;
         this.contact = contact;

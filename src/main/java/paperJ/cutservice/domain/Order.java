@@ -2,8 +2,6 @@ package paperJ.cutservice.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import paperJ.cutservice.domain.paper.PaperColor;
-import paperJ.cutservice.domain.paper.PaperType;
 
 import java.time.LocalDate;
 
@@ -43,7 +41,7 @@ public class Order {
     }
 
     /* 주문 상태 변경 로직 */
-    public void setStatus(OrderStatus orderStatus) {
-        this.status = status;
+    public void setStatus(String orderStatus) {
+        this.status = OrderStatus.valueOf(orderStatus);
     }
 }

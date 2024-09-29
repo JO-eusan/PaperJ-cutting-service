@@ -16,7 +16,7 @@ public class AdminService {
     private final AdminRepository adminRepository;
 
     /* 모든 견적서 조회 */
-    public List<Estimate> getEstimates() {
+    public List<Estimate> getAllEstimates() {
         return adminRepository.findAllEstimates();
     }
 }

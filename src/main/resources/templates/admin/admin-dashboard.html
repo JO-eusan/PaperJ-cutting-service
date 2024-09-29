@@ -9,7 +9,7 @@
         /* 기본 폰트 및 레이아웃 설정 */
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #ffffff; /* 전체 배경을 연한 회색으로 */
+            background-color: #ffffff;
             text-align: center;
         }
         .container {
@@ -108,20 +108,39 @@
                 <td th:text="${estimate.order?.userInfo?.contact ?: ''}"></td>
                 <td th:text="${estimate.order?.userInfo?.name ?: ''}"></td>
                 <td>
-                    <form th:action="@{/admin/order/update/{id}(id=${estimate.id})}" method="post" class="inline-form">
+                    <form th:if="${estimate.isOrder}" th:action="@{/admin/order/update/{id}(id=${estimate.id})}" method="post" class="inline-form">
                         <select class="form-control" name="status" onchange="this.form.submit()">
-                            <option th:selected="${estimate.isOrder ? '주문 완료' : '견적서 발급'}">견적서 발급</option>
-                            <option>접수완료</option>
-                            <option>접수 확인중</option>
-                            <option>주문완료</option>
-                            <option>재단 준비중</option>
-                            <option>배송 준비중</option>
-                            <option>배송중</option>
-                            <option>배송 완료</option>
+                            <!-- 접수 완료 -->
+                            <option value="ORDER_RECEIVED" th:selected="${estimate.order?.status?.name() == 'ORDER_RECEIVED'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).ORDER_RECEIVED.koreanName}">접수 완료</option>
+                            <!-- 주문 확인 중 -->
+                            <option value="ORDER_CHECKING" th:selected="${estimate.order?.status?.name() == 'ORDER_CHECKING'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).ORDER_CHECKING.koreanName}">주문 확인중</option>
+                            <!-- 주문 완료 -->
+                            <option value="ORDER_COMPLETED" th:selected="${estimate.order?.status?.name() == 'ORDER_COMPLETED'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).ORDER_COMPLETED.koreanName}">주문 완료</option>
+                            <!-- 재단 준비 중 -->
+                            <option value="CUTTING_PREPARING" th:selected="${estimate.order?.status?.name() == 'CUTTING_PREPARING'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).CUTTING_PREPARING.koreanName}">재단 준비중</option>
+                            <!-- 배송 준비 중 -->
+                            <option value="DELIVERY_PREPARING" th:selected="${estimate.order?.status?.name() == 'DELIVERY_PREPARING'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).DELIVERY_PREPARING.koreanName}">배송 준비중</option>
+                            <!-- 배송 중 -->
+                            <option value="DELIVERY" th:selected="${estimate.order?.status?.name() == 'DELIVERY'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).DELIVERY.koreanName}">배송중</option>
+                            <!-- 배송 완료 -->
+                            <option value="DELIVERY_COMPLETED" th:selected="${estimate.order?.status?.name() == 'DELIVERY_COMPLETED'}"
+                                    th:text="${T(paperJ.cutservice.domain.OrderStatus).DELIVERY_COMPLETED.koreanName}">배송 완료</option>
                         </select>
                     </form>
+
+                    <!-- 주문이 없는 경우 '견적서 발급'만 텍스트로 표시 -->
+                    <span th:if="${!estimate.isOrder}">견적서 발급</span>
                 </td>
-                <td><a th:href="@{/estimate/view/{id}(id=${estimate.id})}" class="btn-custom">확인</a></td>
+
+                <td>
+                    <a th:href="@{/admin/estimate/viewonly/{id}(id=${estimate.id})}" class="btn-custom">상세정보</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -138,9 +157,8 @@
             <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="file" class="form-control-file" name="file" onchange="handleFileChange(this)" required>
-                    <div id="fileStatus" class="file-status">선택된 파일 없음</div> <!-- 파일 상태 표시 -->
                 </div>
-                <button type="submit" class="btn-custom">파일 업로드</button>
+                <button type="submit" class="btn-custom">업로드</button>
             </form>
         </div>
     </div>

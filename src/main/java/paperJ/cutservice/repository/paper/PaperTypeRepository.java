@@ -23,7 +23,7 @@ public class PaperTypeRepository {
         return em.find(PaperType.class, paperTypeId);
     }
 
-    /* 종이 이름으로 조회 */
+    /* 종이 이름과 gsm으로 조회 */
     public PaperType findByNameAndGSM(String name, int gsm) {
         try {
             return em.createQuery("select pt from PaperType pt where pt.name = :name and pt.GSM = :gsm", PaperType.class)
@@ -36,16 +36,16 @@ public class PaperTypeRepository {
     }
 
     /* 모든 종이 종류 조회 */
-    public List<String> findAllPaperType() {
+    public List<String> findAllPaperTypes() {
         return em.createQuery("select distinct pt.name from PaperType pt", String.class)
                 .getResultList();
     }
 
     /* 종이 이름에 대한 가능한 GSM 목록 조회 */
-    public List<Integer> findGSMbyPaperType(String name) {
+    public List<Integer> findGSMbyPaperType(String paperTypeName) {
         // 특정 종이에 해당되는 GSM 목록 조회
         return em.createQuery("select distinct pt.GSM from PaperType pt where pt.name = :name", Integer.class)
-                .setParameter("name", name)
+                .setParameter("name", paperTypeName)
                 .getResultList();
     }
 }

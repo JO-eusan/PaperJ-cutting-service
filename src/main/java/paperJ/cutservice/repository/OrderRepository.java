@@ -29,4 +29,11 @@ public class OrderRepository {
                 .getResultList();
     }
 
+    /* 견적서 ID로 조회 */
+    public Order findByEstimateId(Long estimateId) {
+        return em.createQuery("select o from Order o where o.estimate.id = :estimateId", Order.class)
+                .setParameter("estimateId", estimateId)
+                .getSingleResult();
+    }
+
 }

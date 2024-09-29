@@ -29,10 +29,4 @@ public class EstimateRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
-
-    /* 모든 견적서 조회 */
-    public List<Estimate> findAllEstimates() {
-        return em.createQuery("select e from Estimate e", Estimate.class)
-                .getResultList();
-    }
 }

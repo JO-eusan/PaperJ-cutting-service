@@ -10,15 +10,30 @@
     <h2>견적서 상세 정보</h2>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">견적서 ID: <span th:text="${estimate.id}"></span></h5>
+            <h5 class="card-title">견적서 ID: <span th:text="${estimate.id}" id="estimateId"></span></h5>
             <p class="card-text">종이 종류: <span th:text="${estimate.paperType.name}"></span></p>
-            <p class="card-text">종이 색상: <span th:text="${estimate.paperColor.color}"></span></p>
             <p class="card-text">GSM: <span th:text="${estimate.GSM}"></span></p>
+            <p class="card-text">종이 색상: <span th:text="${estimate.paperColor.color}"></span></p>
             <p class="card-text">크기: <span th:text="${estimate.sizeX} + ' x ' + ${estimate.sizeY}"></span> cm</p>
             <p class="card-text">주문 장수: <span th:text="${estimate.cardQuantity}"></span></p>
             <p class="card-text">발급 날짜: <span th:text="${estimate.issueDate}"></span></p>
             <p class="card-text">총 가격: <span th:text="${estimate.totalPrice}"></span> 원</p>
-            <a href="#" class="btn btn-primary" id="backToListButton" th:data-userId="${userId}">견적서 목록으로 돌아가기</a>
+
+            <!-- 사용자 입력 폼: 이름과 연락처 -->
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">연락처</label>
+                <input type="text" class="form-control" id="contact" placeholder="연락처를 입력하세요" required>
+            </div>
+
+            <!-- 주문 버튼 -->
+            <button id="orderButton" class="btn btn-primary">주문하기</button>
+
+            <!-- 돌아가기 버튼 -->
+            <a href="#" class="btn btn-secondary" id="backToListButton" th:data-userId="${userId}">견적서 목록으로 돌아가기</a>
         </div>
     </div>
 </div>
@@ -29,6 +44,43 @@
         event.preventDefault();
         var userId = this.getAttribute("data-userId");
         location.href = '/user/estimate/list/' + userId;
+    });
+
+    // 주문 버튼 클릭 이벤트 리스너 추가
+    document.getElementById("orderButton").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // 입력값 가져오기
+        var name = document.getElementById("name").value;
+        var contact = document.getElementById("contact").value;
+        var estimateId = document.getElementById("estimateId").textContent.trim(); // estimateId 가져오기
+
+        if (!name || !contact) {
+            alert('이름과 연락처를 입력하세요.');
+            return;
+        }
+
+        // 주문 요청 보내기 (AJAX)
+        fetch('/user/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                estimateId: estimateId,
+                name: name,
+                contact: contact
+            })
+        }).then(response => {
+            if (response.ok) {
+                alert('주문이 성공적으로 요청되었습니다.');
+                location.reload(); // 페이지 새로고침
+            } else {
+                alert('주문 요청 중 오류가 발생했습니다.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
     });
 </script>
 </body>

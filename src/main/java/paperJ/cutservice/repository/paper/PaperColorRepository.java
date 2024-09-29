@@ -5,7 +5,6 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import paperJ.cutservice.domain.paper.PaperColor;
-import paperJ.cutservice.domain.paper.PaperType;
 
 import java.util.List;
 
