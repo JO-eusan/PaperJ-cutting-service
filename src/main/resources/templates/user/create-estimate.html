@@ -35,22 +35,22 @@
         }
 
         .btn-primary {
-            background-color: #48767B; /* 원하는 색상 */
-            border-color: #48767B;
+            background-color: #1B1B1B; /* 원하는 색상 */
+            border-color: #1B1B1B;
             color: white; /* 텍스트 색상 */
             width: 100%;
         }
 
         .btn-primary:hover {
-            background-color: #3B6064; /* hover 시 색상 */
-            border-color: #3B6064;
+            background-color: #1B1B1B; /* hover 시 색상 */
+            border-color: #1B1B1B;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container mt-5">
-    <img src="/logo/cursive.png" class="logo" alt="Paper J Logo">
+    <img src="/logo/cursive.png" class="logo" alt="Paper J Logo" onclick="goBack()">
     <form th:action="@{/user/estimate/new/{userId}(userId=${userId})}" method="post">
         <!-- 숨겨진 userId 필드 추가 -->
         <input type="hidden" name="userId" th:value="${userId}">
@@ -104,6 +104,11 @@
 </div>
 
 <script>
+    // 브라우저의 이전 페이지로 돌아가는 함수
+    function goBack() {
+        window.history.back();
+    }
+
     // 종이 종류 선택 시 GSM 목록 불러오기
     $('#paperType').on('change', function() {
         var paperTypeName = $(this).val();

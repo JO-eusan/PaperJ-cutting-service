@@ -4,10 +4,85 @@
     <meta charset="UTF-8">
     <title>견적서 목록</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
+            cursor: pointer;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        th, td {
+            vertical-align: middle;
+            font-size: 14px; /* 폰트 크기 축소 */
+            font-weight: 300; /* 글자 두께 조정 (얇게) */
+            white-space: nowrap; /* 한 줄로 유지 */
+            overflow: hidden; /* 넘치는 텍스트 숨김 */
+            text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+        }
+
+        /* 각 칼럼에 고정 너비 설정 */
+        th:nth-child(1), td:nth-child(1) { width: 10%; }  /* 견적서 ID */
+        th:nth-child(2), td:nth-child(2) { width: 15%; }  /* 종이 종류 */
+        th:nth-child(3), td:nth-child(3) { width: 15%; }  /* 종이 색상 */
+        th:nth-child(4), td:nth-child(4) { width: 10%; }  /* GSM */
+        th:nth-child(5), td:nth-child(5) { width: 10%; }  /* 크기 */
+        th:nth-child(6), td:nth-child(6) { width: 10%; }  /* 주문 장수 */
+        th:nth-child(7), td:nth-child(7) { width: 10%; }  /* 발급 날짜 */
+        th:nth-child(8), td:nth-child(8) { width: 10%; }  /* 발급/주문 현황 */
+        th:nth-child(9), td:nth-child(9) { width: 10%; }  /* 상세 보기 */
+
+        .btn-primary {
+            background-color: #1B1B1B;
+            border-color: #1B1B1B;
+            font-size: 14px; /* 글자 크기 조정 */
+            font-weight: 300; /* 글자 두께 조정 (얇게) */
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1B1B1B;
+            border-color: #1B1B1B;
+        }
+
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h2>견적서 목록</h2>
+
+<div class="container">
+    <!-- 로고 추가 -->
+    <img src="/logo/cursive.png" class="logo" alt="Paper J Logo" onclick="goBack()">
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -18,7 +93,7 @@
             <th>크기 (cm)</th>
             <th>주문 장수</th>
             <th>발급 날짜</th>
-            <th>발급/주문 현황</th> <!-- 발급/주문 현황 칼럼 추가 -->
+            <th>발급/주문 현황</th>
             <th>상세 보기</th>
         </tr>
         </thead>
@@ -39,7 +114,7 @@
             <td>
                 <a href="#" class="btn btn-primary viewDetailButton"
                    th:data-id="${estimate.id}"
-                   th:data-userId="${userId}">상세 보기</a>
+                   th:data-userId="${userId}">상세보기</a>
             </td>
         </tr>
         </tbody>
@@ -47,9 +122,14 @@
 </div>
 
 <script>
+    // 브라우저의 이전 페이지로 돌아가는 함수
+    function goBack() {
+        window.history.back();
+    }
+
     // 상세 보기 버튼 클릭 이벤트 리스너 추가
-    document.querySelectorAll(".viewDetailButton").forEach(function(button) {
-        button.addEventListener("click", function(event) {
+    document.querySelectorAll(".viewDetailButton").forEach(function (button) {
+        button.addEventListener("click", function (event) {
             event.preventDefault();
             var id = this.getAttribute("data-id");
             var userId = this.getAttribute("data-userId");
