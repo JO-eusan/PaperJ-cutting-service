@@ -13,6 +13,11 @@ java {
 	}
 }
 
+jar {
+	archiveBaseName.set('cutservice')
+	archiveVersion.set('0.0.1-SNAPSHOT')
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
