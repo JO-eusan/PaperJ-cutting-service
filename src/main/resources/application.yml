@@ -6,13 +6,18 @@ spring:
     driver-class-name: org.h2.Driver
 
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
+
+  h2:
+    console:
+      enabled: true
 
   output.ansi.enabled: always
 
