@@ -45,10 +45,10 @@ public class Estimate {
     private int sheetQuantity;
 
     @Column(name = "PRICE_PER_SHEET")
-    private double pricePerSheet;
+    private int pricePerSheet;
 
     @Column(name = "TOTAL_PRICE")
-    private double totalPrice;
+    private int totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
@@ -95,11 +95,11 @@ public class Estimate {
         this.sheetQuantity = sheetQuantity;
     }
 
-    public void setPricePerSheet(double pricePerSheet) {
+    public void setPricePerSheet(int pricePerSheet) {
         this.pricePerSheet = pricePerSheet;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 

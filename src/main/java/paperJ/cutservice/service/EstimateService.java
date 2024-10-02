@@ -55,8 +55,8 @@ public class EstimateService {
         Estimate estimate = new Estimate(paperType, paperColor, sizeX, sizeY, gsm, cardQuantity, user);
 
         int sheetQuantity = calculateSheetQuantity(estimate);
-        double pricePerSheet = paperColor.getPricePerSheet();
-        double totalPrice = sheetQuantity * pricePerSheet;
+        int pricePerSheet = paperColor.getPricePerSheet();
+        int totalPrice = sheetQuantity * pricePerSheet + 120000; // 기본 요금 12만원
 
         estimate.setSheetQuantity(sheetQuantity);
         estimate.setPricePerSheet(pricePerSheet);

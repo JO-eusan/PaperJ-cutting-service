@@ -107,7 +107,7 @@
         <div class="card-body">
             <h5 class="card-title">견적서 ID: <span th:text="${estimate.id}" id="estimateId"></span></h5>
             <p class="card-text">종이 종류: <span th:text="${estimate.paperType.name}"></span></p>
-            <p class="card-text">GSM: <span th:text="${estimate.GSM}"></span></p>
+            <p class="card-text">평량: <span th:text="${estimate.GSM}"></span></p>
             <p class="card-text">종이 색상: <span th:text="${estimate.paperColor.color}"></span></p>
             <p class="card-text">크기: <span th:text="${estimate.sizeX} + ' x ' + ${estimate.sizeY}"></span> cm</p>
             <p class="card-text">주문 장수: <span th:text="${estimate.cardQuantity}"></span></p>

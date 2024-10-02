@@ -66,7 +66,7 @@ public class PaperTypeService {
 
                 // PaperColor 정보 추출
                 String paperColorName = row.getCell(4).getStringCellValue();
-                double pricePerSheet = row.getCell(5).getNumericCellValue();
+                int pricePerSheet = (int) row.getCell(5).getNumericCellValue();
 
                 // PaperType이 변경된 경우 새로 조회 또는 생성
                 if (currentPaperType == null ||
